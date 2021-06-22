@@ -54,3 +54,35 @@ En el registro, se puede asignar la prioridad de la incidencia, la ubicación y 
 
 Al pulsar sobre "Crear" se actualizará la tabla con el nuevo registro.
 Al pulsar sobre "Volver" en cualquiere momento, volveremos a la página de listado de empleados.
+
+
+# Respuesta a cuestionario
+
+## 1.1	MÉTODOS  QUE EXPONE LA API
+Se explican en el Readme de la Api los métodos expuestos.
+
+## 1.2	NOTIFICAR QUE SE HA CREADO UNA INCIDENCIA A UN EMPLEADO
+
+Para este caso, tenemos varias opciones
+
+ ### Servicio de Windows
+ Se puede crear un servicio de windows que configurado cada pocos minutos para que consulte la tabla de INCIDENCIAS y si encuentra un nuevo registro, notifique al empleado en cuestión vía mail.
+ 
+ ### SignalR
+ Con esta librería se podrían lanzar notificaciones inmediatas al empleado mediantes notificaciones push en la plataforma.
+ 
+ ## 1.3	BASE DE DATOS
+ La query para SQLServer, sería la siguiente:
+ ```sql
+  SELECT TOP 1 EM.ID as EmpleadoID, Count(EM.ID) AS IncidenciasTotales 
+  FROM Empresa E
+  INNER JOIN Empleado EM ON  EM.EmpresaID = E.ID
+  INNER JOIN Incidencia I ON I.EmpleadoID = EM.ID
+  WHERE E.Nombre = 'Munity' and I.FIncidencia BETWEEN '2021-05-01' and '2021-05-31' 
+  GROUP BY EM.ID  
+  ORDER BY  IncidenciasTotales DESC
+```
+
+ 
+ ## 1.4 SEGURIDAD
+ Se explica en el Readme de la Api que está securizado mediante JWT

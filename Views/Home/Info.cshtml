@@ -1,0 +1,101 @@
+﻿@{ EmpleadoViewModel empleado = ViewBag.Empleado;
+@model List<IncidenciaViewModel>
+}
+
+<!-- Cabecera -->
+<div class="row">
+    <div class="col-md-10">
+        <h1 class="h3 mb-3 font-weight-normal">Incidencias Usuario: @empleado.ID - @empleado.Apellido2 @empleado.Apellido1, @empleado.Nombre</h1>
+    </div>
+</div>
+
+
+<!-- Tabla de datos -->
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id Incidencia</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Fecha Incidencia</th>
+            <th scope="col">Empleado Asignado</th>
+            <th scope="col">Prioridad</th>
+            <th scope="col">Ubicación</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{ foreach (IncidenciaViewModel incidencia in Model)
+            {
+<tr>
+    <td>@incidencia.ID</td>
+    <td>@incidencia.IncidenciaDesc</td>
+    <td>@incidencia.FIncidencia</td>
+    <td>@empleado.Nombre  @empleado.Apellido1</td>
+    <td>@incidencia.Prioridad</td>
+    <td>@incidencia.Ubicacion</td>
+</tr> } }
+    </tbody>
+</table>
+
+<!-- Botón mostrar formulario -->
+
+<div class="col-md-6">
+    <a class="btn btn-primary" data-toggle="collapse" href="#formCrearIncidencia" role="button" aria-expanded="false" aria-controls="formCrearIncidencia">Crear Nueva Incidencia</a>
+</div>
+
+<!-- Formulario -->
+
+@using (Html.BeginForm("CrearIncidencia", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="row">
+        <div class="col">
+            <div class="collapse multi-collapse" id="formCrearIncidencia">
+                <div class="card card-body">
+
+
+                    <form id="crearInci" hidden>
+
+                        <div class="form-group">
+                            <label for="IncidenciaDesc">Descripción de la incidencia: </label>
+                            <input type="text" class="form-control" name="IncidenciaDesc" id="IncidenciaDesc" aria-describedby="IncHelp">
+                            <small id="IncHelp" class="form-text text-muted">Describa con detalle el motivo de la incidencia</small>
+
+                            <label for="FechaInc">Fecha de la Incidencia </label>
+                            <input type="text" class="form-control" name="FechaInc" id="FechaInc" aria-describedby="IncHelp" value="@DateTime.Parse(DateTime.Now.ToString())" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="IncidenciaAsignada">Empleado Asignado</label>
+                            <input type="text" class="form-control" id="IncidenciaAsignada" readonly value="@empleado.Nombre">
+                            <input type="hidden" class="form-control" name="IncidenciaAsignadaHidden" id="IncidenciaAsignadaHidden" readonly value="@empleado.ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="Prioridad">Prioridad</label>
+                            <select type="" class="form-control" name="Prioridad" id="Prioridad">
+                                <option value=0 selected>Baja</option>
+                                <option value=1>Media</option>
+                                <option value=2>Alta</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Ubicacion">Ubicación</label>
+                            <input type="text" class="form-control" id="Ubicacion" name="Ubicacion">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Crear</button>
+
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Botón volver a lista de usuarios -->
+<div class="col-md-6 text-right">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-link">
+        Volver
+    </a>
+</div>
